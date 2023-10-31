@@ -3,3 +3,7 @@ spring:
     url: jdbc:mysql://localhost:3306/order_service
     username: root
     password: 0880
+
+  jpa:
+    hibernate:
+      ddl-auto: update
