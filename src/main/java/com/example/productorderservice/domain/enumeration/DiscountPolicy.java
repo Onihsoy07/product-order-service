@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum DiscountPolicy {
 
-    NONE("none");
+    NONE("NONE");
 
     private final String value;
 
