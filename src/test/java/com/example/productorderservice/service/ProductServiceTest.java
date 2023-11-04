@@ -20,7 +20,7 @@ public class ProductServiceTest {
 
     @Test
     void 상품등록() {
-        ItemSaveDto itemSaveDto = new ItemSaveDto("상품명", 9999, "none");
+        ItemSaveDto itemSaveDto = new ItemSaveDto("상품명", 9999, DiscountPolicy.NONE.getValue());
 
         productService.addItem(itemSaveDto);
     }
