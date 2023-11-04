@@ -1,6 +1,7 @@
 package com.example.productorderservice.service;
 
 import com.example.productorderservice.domain.Item;
+import com.example.productorderservice.domain.dto.ItemDto;
 import com.example.productorderservice.domain.dto.ItemSaveDto;
 import com.example.productorderservice.domain.enumeration.DiscountPolicy;
 import com.example.productorderservice.repository.ItemRepository;
@@ -24,6 +25,19 @@ public class ProductService {
                 .discountPolicy(DiscountPolicy.valueOf(itemSaveDto.getDiscountPolicy().toUpperCase()))
                 .build();
         itemRepository.save(item);
+    }
+
+    public ItemDto getItem(Long itemId) {
+        Item item = itemRepository.findById(itemId).orElseThrow(() -> {
+            throw new IllegalArgumentException("상품이 존재하지 않습니다.");
+        });
+
+        return new ItemDto(
+                item.getId(),
+                item.getItemName(),
+                item.getPrice(),
+                item.getDiscountPolicy().getValue()
+        );
     }
 
 }
