@@ -5,20 +5,26 @@ import com.example.productorderservice.domain.dto.ItemSaveDto;
 import com.example.productorderservice.domain.dto.ItemUpdateDto;
 import com.example.productorderservice.domain.enumeration.DiscountPolicy;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.Extensions;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 @SpringBootTest
 @Transactional
 public class ProductServiceTest {
 
-    @Autowired
+    @Mock
     private ProductService productService;
-
     @Test
     void 상품등록() {
         ItemSaveDto itemSaveDto = new ItemSaveDto("상품명", 9999, DiscountPolicy.NONE.getValue());
@@ -32,9 +38,11 @@ public class ProductServiceTest {
         String itemName = "상품명";
         int price = 9999;
         DiscountPolicy discountPolicy = DiscountPolicy.NONE;
-//        ItemSaveDto itemSaveDto = new ItemSaveDto(itemName, price, discountPolicy.getValue());
-//        productService.addItem(itemSaveDto);
+        ItemSaveDto itemSaveDto = new ItemSaveDto(itemName, price, discountPolicy.getValue());
+        productService.addItem(itemSaveDto);
         final long itemId = 1L;
+
+        Mockito.when(productService.getItem(itemId)).thenReturn(new ItemDto(itemId, itemName, price, discountPolicy.getValue()));
 
         //when
         ItemDto itemDto = productService.getItem(itemId);
@@ -54,6 +62,8 @@ public class ProductServiceTest {
         DiscountPolicy updateDiscountPolicy = DiscountPolicy.NONE;
         final long itemId = 1L;
         ItemUpdateDto itemUpdateDto = new ItemUpdateDto(updateItemName, updatePrice, updateDiscountPolicy.getValue());
+
+        Mockito.when(productService.getItem(itemId)).thenReturn(new ItemDto(itemId, updateItemName, updatePrice, updateDiscountPolicy.getValue()));
 
         //when
         productService.updateItem(itemId, itemUpdateDto);
