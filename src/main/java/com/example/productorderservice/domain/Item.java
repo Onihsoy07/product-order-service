@@ -1,5 +1,6 @@
 package com.example.productorderservice.domain;
 
+import com.example.productorderservice.domain.dto.ItemUpdateDto;
 import com.example.productorderservice.domain.enumeration.DiscountPolicy;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -33,5 +34,11 @@ public class Item {
         this.itemName = itemName;
         this.price = price;
         this.discountPolicy = discountPolicy;
+    }
+
+    public void updateItem(ItemUpdateDto itemUpdateDto) {
+        this.itemName = itemUpdateDto.getItemName();
+        this.price = itemUpdateDto.getPrice();
+        this.discountPolicy = DiscountPolicy.valueOf(itemUpdateDto.getDiscountPolicy().toUpperCase());
     }
 }
