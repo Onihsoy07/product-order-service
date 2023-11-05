@@ -2,6 +2,7 @@ package com.example.productorderservice.service;
 
 import com.example.productorderservice.domain.dto.ItemDto;
 import com.example.productorderservice.domain.dto.ItemSaveDto;
+import com.example.productorderservice.domain.dto.ItemUpdateDto;
 import com.example.productorderservice.domain.enumeration.DiscountPolicy;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -43,7 +44,26 @@ public class ProductServiceTest {
         assertThat(itemDto.getItemName()).isEqualTo(itemName);
         assertThat(itemDto.getPrice()).isEqualTo(price);
         assertThat(itemDto.getDiscountPolicy()).isEqualTo(discountPolicy.getValue());
+    }
 
+    @Test
+    void 상품수정() {
+        //given
+        String updateItemName = "상품명1";
+        int updatePrice = 1004;
+        DiscountPolicy updateDiscountPolicy = DiscountPolicy.NONE;
+        final long itemId = 1L;
+        ItemUpdateDto itemUpdateDto = new ItemUpdateDto(updateItemName, updatePrice, updateDiscountPolicy.getValue());
+
+        //when
+        productService.updateItem(itemId, itemUpdateDto);
+        ItemDto item = productService.getItem(itemId);
+
+        //then
+        assertThat(item).isNotNull();
+        assertThat(item.getItemName()).isEqualTo(updateItemName);
+        assertThat(item.getPrice()).isEqualTo(updatePrice);
+        assertThat(item.getDiscountPolicy()).isEqualTo(updateDiscountPolicy.getValue());
 
     }
 }
