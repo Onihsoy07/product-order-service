@@ -2,6 +2,7 @@ package com.example.productorderservice.controller;
 
 import com.example.productorderservice.domain.dto.ItemDto;
 import com.example.productorderservice.domain.dto.ItemSaveDto;
+import com.example.productorderservice.domain.dto.ItemUpdateDto;
 import com.example.productorderservice.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,14 @@ public class ProductApiController {
         ItemDto itemDto = productService.getItem(itemId);
 
         return ResponseEntity.status(HttpStatus.OK).body(itemDto);
+    }
+
+    @PatchMapping("/{itemId}")
+    public ResponseEntity<ItemDto> updateItem(@PathVariable("itemId") Long itemId,
+                                              @Valid @RequestBody final ItemUpdateDto itemUpdateDto) {
+        productService.updateItem(itemId, itemUpdateDto);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 

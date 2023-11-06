@@ -28,6 +28,7 @@ public class ProductService {
         itemRepository.save(item);
     }
 
+    @Transactional(readOnly = true)
     public ItemDto getItem(Long itemId) {
         Item item = getItemEntity(itemId);
 
