@@ -1,7 +1,9 @@
 package com.example.productorderservice.service;
 
 import com.example.productorderservice.config.ApiTestConfig;
+import com.example.productorderservice.domain.dto.ItemDto;
 import com.example.productorderservice.domain.dto.ItemSaveDto;
+import com.example.productorderservice.domain.dto.ItemUpdateDto;
 import com.example.productorderservice.domain.enumeration.DiscountPolicy;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
 public class ProductApiTest extends ApiTestConfig {
 
     @Autowired
@@ -53,6 +56,31 @@ public class ProductApiTest extends ApiTestConfig {
         assertThat(response.jsonPath().getInt("price")).isEqualTo(9999);
         assertThat(response.jsonPath().getString("discountPolicy")).isEqualTo(DiscountPolicy.NONE.getValue());
 
+    }
+
+    @Test
+    void 상품수정() {
+        상품등록();
+        String updateItemName = "상품명1";
+        int updatePrice = 1004;
+        DiscountPolicy updateDiscountPolicy = DiscountPolicy.NONE;
+        final long itemId = 1L;
+        ItemUpdateDto itemUpdateDto = new ItemUpdateDto(updateItemName, updatePrice, updateDiscountPolicy.getValue());
+
+        ExtractableResponse<Response> response = RestAssured.given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(itemUpdateDto)
+                .when()
+                .patch("/products/{itemId}", itemId)
+                .then().log().all()
+                .extract();
+
+        ItemDto itemDto = productService.getItem(itemId);
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(itemDto.getItemName()).isEqualTo(updateItemName);
+        assertThat(itemDto.getPrice()).isEqualTo(updatePrice);
+        assertThat(itemDto.getDiscountPolicy()).isEqualTo(updateDiscountPolicy.getValue());
     }
 
 }
