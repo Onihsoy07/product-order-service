@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.*;
 public class ProductApiTest extends ApiTestConfig {
 
     @Autowired
-    private ProductService productService;
+    private ItemService itemService;
 
     @Test
     void 상품등록() {
@@ -75,7 +75,7 @@ public class ProductApiTest extends ApiTestConfig {
                 .then().log().all()
                 .extract();
 
-        ItemDto itemDto = productService.getItem(itemId);
+        ItemDto itemDto = itemService.getItem(itemId);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         assertThat(itemDto.getItemName()).isEqualTo(updateItemName);

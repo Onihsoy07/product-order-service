@@ -1,4 +1,4 @@
-package com.example.productorderservice.domain;
+package com.example.productorderservice.domain.entity;
 
 import com.example.productorderservice.domain.dto.ItemUpdateDto;
 import com.example.productorderservice.domain.enumeration.DiscountPolicy;

@@ -3,7 +3,7 @@ package com.example.productorderservice.controller;
 import com.example.productorderservice.domain.dto.ItemDto;
 import com.example.productorderservice.domain.dto.ItemSaveDto;
 import com.example.productorderservice.domain.dto.ItemUpdateDto;
-import com.example.productorderservice.service.ProductService;
+import com.example.productorderservice.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,19 +17,19 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class ProductApiController {
 
-    private final ProductService productService;
+    private final ItemService itemService;
 
     @PostMapping
     public ResponseEntity<Void> addItem(@Valid @RequestBody final ItemSaveDto itemSaveDto,
                                         BindingResult bindingResult) {
-        productService.addItem(itemSaveDto);
+        itemService.addItem(itemSaveDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/{itemId}")
     public ResponseEntity<ItemDto> getItem(@PathVariable("itemId") Long itemId) {
-        ItemDto itemDto = productService.getItem(itemId);
+        ItemDto itemDto = itemService.getItem(itemId);
 
         return ResponseEntity.status(HttpStatus.OK).body(itemDto);
     }
@@ -37,7 +37,7 @@ public class ProductApiController {
     @PatchMapping("/{itemId}")
     public ResponseEntity<ItemDto> updateItem(@PathVariable("itemId") Long itemId,
                                               @Valid @RequestBody final ItemUpdateDto itemUpdateDto) {
-        productService.updateItem(itemId, itemUpdateDto);
+        itemService.updateItem(itemId, itemUpdateDto);
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }

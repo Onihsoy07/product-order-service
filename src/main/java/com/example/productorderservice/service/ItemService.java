@@ -1,6 +1,6 @@
 package com.example.productorderservice.service;
 
-import com.example.productorderservice.domain.Item;
+import com.example.productorderservice.domain.entity.Item;
 import com.example.productorderservice.domain.dto.ItemDto;
 import com.example.productorderservice.domain.dto.ItemSaveDto;
 import com.example.productorderservice.domain.dto.ItemUpdateDto;
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class ProductService {
+public class ItemService {
 
     private final ItemRepository itemRepository;
 
