@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class OrderSaveDto {
 
-    @NotBlank(message = "상품아이디를 넣어주세요.")
+    @Min(value = 0)
     private Long itemId;
     @Min(value = 1, message = "수량은 1개 이상 넣어주세요.")
     private int quantity;
