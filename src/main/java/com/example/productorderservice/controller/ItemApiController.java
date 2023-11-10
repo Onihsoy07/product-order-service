@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/items")
 @RequiredArgsConstructor
-public class ProductApiController {
+public class ItemApiController {
 
     private final ItemService itemService;
 

@@ -18,8 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
-@Transactional
-public class ProductApiTest extends ApiTestConfig {
+public class ItemApiTest extends ApiTestConfig {
 
     @Autowired
     private ItemService itemService;
@@ -33,7 +32,7 @@ public class ProductApiTest extends ApiTestConfig {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(itemSaveDto)
                 .when()
-                .post("/products")
+                .post("/items")
                 .then()
                 .log().all().extract();
 
@@ -47,7 +46,7 @@ public class ProductApiTest extends ApiTestConfig {
 
         ExtractableResponse<Response> response = RestAssured.given().log().all()
                 .when()
-                .get("/products/{itemId}", itemId)
+                .get("/items/{itemId}", itemId)
                 .then().log().all()
                 .extract();
 
@@ -71,7 +70,7 @@ public class ProductApiTest extends ApiTestConfig {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(itemUpdateDto)
                 .when()
-                .patch("/products/{itemId}", itemId)
+                .patch("/items/{itemId}", itemId)
                 .then().log().all()
                 .extract();
 
