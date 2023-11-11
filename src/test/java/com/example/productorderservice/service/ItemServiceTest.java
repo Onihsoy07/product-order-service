@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +21,10 @@ import static org.assertj.core.api.Assertions.*;
 public class ItemServiceTest {
 
     @Mock
+    private ItemService itemServiceMock;
+    @Autowired
     private ItemService itemService;
+
     @Test
     void 상품등록() {
         ItemSaveDto itemSaveDto = new ItemSaveDto("상품명", 9999, DiscountPolicy.NONE.getValue());
@@ -38,10 +42,10 @@ public class ItemServiceTest {
         itemService.addItem(itemSaveDto);
         final long itemId = 1L;
 
-        Mockito.when(itemService.getItem(itemId)).thenReturn(new ItemDto(itemId, itemName, price, discountPolicy.getValue()));
+        Mockito.when(itemServiceMock.getItem(itemId)).thenReturn(new ItemDto(itemId, itemName, price, discountPolicy.getValue()));
 
         //when
-        ItemDto itemDto = itemService.getItem(itemId);
+        ItemDto itemDto = itemServiceMock.getItem(itemId);
 
         //then
         assertThat(itemDto).isNotNull();
@@ -59,17 +63,31 @@ public class ItemServiceTest {
         final long itemId = 1L;
         ItemUpdateDto itemUpdateDto = new ItemUpdateDto(updateItemName, updatePrice, updateDiscountPolicy.getValue());
 
-        Mockito.when(itemService.getItem(itemId)).thenReturn(new ItemDto(itemId, updateItemName, updatePrice, updateDiscountPolicy.getValue()));
+        Mockito.when(itemServiceMock.getItem(itemId)).thenReturn(new ItemDto(itemId, updateItemName, updatePrice, updateDiscountPolicy.getValue()));
 
         //when
-        itemService.updateItem(itemId, itemUpdateDto);
-        ItemDto item = itemService.getItem(itemId);
+        itemServiceMock.updateItem(itemId, itemUpdateDto);
+        ItemDto item = itemServiceMock.getItem(itemId);
 
         //then
         assertThat(item).isNotNull();
         assertThat(item.getItemName()).isEqualTo(updateItemName);
         assertThat(item.getPrice()).isEqualTo(updatePrice);
         assertThat(item.getDiscountPolicy()).isEqualTo(updateDiscountPolicy.getValue());
+
+    }
+
+    @Test
+    void 상품제거() {
+        //given
+        상품등록();
+        final Long itemId = 1L;
+
+        //when
+        itemService.deleteItem(itemId);
+
+        //then
+        assertThatThrownBy(() -> itemService.getItem(itemId)).isInstanceOf(IllegalArgumentException.class);
 
     }
 }
