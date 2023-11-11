@@ -45,6 +45,11 @@ public class ItemService {
         item.updateItem(itemUpdateDto);
     }
 
+    public void deleteItem(Long itemId) {
+        Item item = getItemEntity(itemId);
+        itemRepository.delete(item);
+    }
+
 
     private Item getItemEntity(Long itemId) {
         Item item = itemRepository.findById(itemId).orElseThrow(() -> {
