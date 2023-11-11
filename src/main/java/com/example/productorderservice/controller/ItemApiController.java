@@ -5,6 +5,7 @@ import com.example.productorderservice.domain.dto.ItemSaveDto;
 import com.example.productorderservice.domain.dto.ItemUpdateDto;
 import com.example.productorderservice.service.ItemService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@Slf4j
 @RestController
 @RequestMapping("/items")
 @RequiredArgsConstructor
@@ -39,6 +41,12 @@ public class ItemApiController {
                                               @Valid @RequestBody final ItemUpdateDto itemUpdateDto) {
         itemService.updateItem(itemId, itemUpdateDto);
 
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @DeleteMapping("/{itemId}")
+    public ResponseEntity<Void> deleteItem(@PathVariable("itemId") Long itemId) {
+        itemService.deleteItem(itemId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
