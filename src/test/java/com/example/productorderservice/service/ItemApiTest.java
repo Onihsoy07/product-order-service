@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -42,7 +41,7 @@ public class ItemApiTest extends ApiTestConfig {
     @Test
     void 상품조회() {
         상품등록();
-        Long itemId = 1L;
+        final Long itemId = 1L;
 
         ExtractableResponse<Response> response = RestAssured.given().log().all()
                 .when()
@@ -63,7 +62,7 @@ public class ItemApiTest extends ApiTestConfig {
         String updateItemName = "상품명1";
         int updatePrice = 1004;
         DiscountPolicy updateDiscountPolicy = DiscountPolicy.NONE;
-        final long itemId = 1L;
+        final Long itemId = 1L;
         ItemUpdateDto itemUpdateDto = new ItemUpdateDto(updateItemName, updatePrice, updateDiscountPolicy.getValue());
 
         ExtractableResponse<Response> response = RestAssured.given().log().all()
@@ -80,6 +79,24 @@ public class ItemApiTest extends ApiTestConfig {
         assertThat(itemDto.getItemName()).isEqualTo(updateItemName);
         assertThat(itemDto.getPrice()).isEqualTo(updatePrice);
         assertThat(itemDto.getDiscountPolicy()).isEqualTo(updateDiscountPolicy.getValue());
+    }
+
+    @Test
+    void 상품제거() {
+        //given
+        final Long itemId = 1L;
+        상품등록();
+
+        //when
+        ExtractableResponse<Response> response = RestAssured.given().log().all()
+                .when()
+                .delete("/items/{itemId}", itemId)
+                .then().log().all()
+                .extract();
+
+        //then
+        assertThatThrownBy(() -> itemService.getItem(itemId)).isInstanceOf(IllegalArgumentException.class);
+
     }
 
 }
