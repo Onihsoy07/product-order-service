@@ -1,6 +1,7 @@
 package com.example.productorderservice.service;
 
-import com.example.productorderservice.domain.dto.OrderSaveDto;
+import com.example.productorderservice.domain.dto.OrdersSaveDto;
+import com.example.productorderservice.domain.dto.OrdersDto;
 import com.example.productorderservice.domain.entity.Item;
 import com.example.productorderservice.domain.entity.Orders;
 import com.example.productorderservice.repository.ItemRepository;
@@ -19,13 +20,18 @@ public class OrdersService {
     private final OrdersRepository ordersRepository;
     private final ItemRepository itemRepository;
 
-    public void saveOrders(OrderSaveDto orderSaveDto) {
+    public void saveOrders(OrdersSaveDto ordersSaveDto) {
         Orders orders = Orders.builder()
-                .item(getItemEntity(orderSaveDto.getItemId()))
-                .quantity(orderSaveDto.getQuantity())
+                .item(getItemEntity(ordersSaveDto.getItemId()))
+                .quantity(ordersSaveDto.getQuantity())
                 .build();
 
         ordersRepository.save(orders);
+    }
+
+    public OrdersDto getOrders(Long ordersId) {
+        Orders orders = getOrdersEntity(ordersId);
+        return new OrdersDto(orders);
     }
 
     private Item getItemEntity(Long itemId) {
@@ -33,5 +39,12 @@ public class OrdersService {
             throw new IllegalArgumentException("상품이 존재하지 않습니다.");
         });
         return item;
+    }
+
+    private Orders getOrdersEntity(Long ordersId) {
+        Orders orders = ordersRepository.findById(ordersId).orElseThrow(() -> {
+            throw new IllegalArgumentException("주문이 존재하지 않습니다");
+        });
+        return orders;
     }
 }

@@ -1,10 +1,8 @@
 package com.example.productorderservice.service;
 
 import com.example.productorderservice.config.ApiTestConfig;
-import com.example.productorderservice.domain.dto.ItemDto;
 import com.example.productorderservice.domain.dto.ItemSaveDto;
-import com.example.productorderservice.domain.dto.ItemUpdateDto;
-import com.example.productorderservice.domain.dto.OrderSaveDto;
+import com.example.productorderservice.domain.dto.OrdersSaveDto;
 import com.example.productorderservice.domain.enumeration.DiscountPolicy;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -15,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,12 +33,12 @@ public class OrdersApiTest extends ApiTestConfig {
 
     @Test
     void 주문생성() {
-        final OrderSaveDto orderSaveDto = new OrderSaveDto(1L, 1234);
+        final OrdersSaveDto ordersSaveDto = new OrdersSaveDto(1L, 1234);
 
         //API 요청
         final ExtractableResponse<Response> response = RestAssured.given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(orderSaveDto)
+                .body(ordersSaveDto)
                 .when()
                 .post("/orders")
                 .then()

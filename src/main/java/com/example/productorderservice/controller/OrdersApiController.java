@@ -1,6 +1,6 @@
 package com.example.productorderservice.controller;
 
-import com.example.productorderservice.domain.dto.OrderSaveDto;
+import com.example.productorderservice.domain.dto.OrdersSaveDto;
 import com.example.productorderservice.service.OrdersService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,9 +23,9 @@ public class OrdersApiController {
     private final OrdersService ordersService;
 
     @PostMapping
-    public ResponseEntity<Void> saveOrders(@Valid @RequestBody final OrderSaveDto orderSaveDto,
+    public ResponseEntity<Void> saveOrders(@Valid @RequestBody final OrdersSaveDto ordersSaveDto,
                                            BindingResult bindingResult) {
-        ordersService.saveOrders(orderSaveDto);
+        ordersService.saveOrders(ordersSaveDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
