@@ -18,8 +18,6 @@ import org.springframework.http.MediaType;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-//트랜잭션 사용 시 Item 사라짐? DataBaseCleanUp 때문?
-//@Transactional
 public class OrdersApiTest extends ApiTestConfig {
 
     @Autowired
