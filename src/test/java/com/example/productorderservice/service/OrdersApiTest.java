@@ -1,6 +1,7 @@
 package com.example.productorderservice.service;
 
 import com.example.productorderservice.config.ApiTestConfig;
+import com.example.productorderservice.domain.dto.ItemDto;
 import com.example.productorderservice.domain.dto.ItemSaveDto;
 import com.example.productorderservice.domain.dto.OrdersSaveDto;
 import com.example.productorderservice.domain.enumeration.DiscountPolicy;
@@ -45,6 +46,29 @@ public class OrdersApiTest extends ApiTestConfig {
                 .log().all().extract();
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+    }
+
+    @Test
+    void 주문조회() {
+        //given
+        final Long ordersId = 1L;
+        주문생성();
+
+        //when
+        final ExtractableResponse<Response> response = RestAssured.given().log().all()
+                .when()
+                .get("/orders/{ordersId}", ordersId)
+                .then()
+                .log().all().extract();
+
+        //then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.jsonPath().getLong("id")).isEqualTo(ordersId);
+        assertThat(response.jsonPath().getInt("quantity")).isEqualTo(1234);
+        assertThat(response.jsonPath().getObject("itemDto", ItemDto.class)).isNotNull();
+
+
+
     }
 
 }
