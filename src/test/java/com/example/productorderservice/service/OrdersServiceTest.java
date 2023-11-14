@@ -36,7 +36,7 @@ public class OrdersServiceTest {
     }
 
     @Test
-    void 주푼조회() {
+    void 주문조회() {
         //given
         final Long itemId = 1L;
         final Long ordersId = 1L;
@@ -54,6 +54,22 @@ public class OrdersServiceTest {
         assertThat(ordersDto.getItemDto().getItemName()).isEqualTo("상품명");
         assertThat(ordersDto.getItemDto().getPrice()).isEqualTo(9999);
         assertThat(ordersDto.getItemDto().getDiscountPolicy()).isEqualTo(DiscountPolicy.NONE.getValue());
+
+    }
+
+    @Test
+    void 주문제거() {
+        //given
+        final Long itemId = 1L;
+        final Long ordersId = 1L;
+        addItem();
+        addOrders(itemId);
+
+        //when
+        ordersService.deleteOrders(ordersId);
+
+        //then
+        assertThatThrownBy(() -> ordersService.getOrders(ordersId)).isInstanceOf(IllegalArgumentException.class);
 
 
     }
