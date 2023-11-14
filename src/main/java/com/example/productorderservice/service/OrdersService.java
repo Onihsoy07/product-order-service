@@ -34,6 +34,11 @@ public class OrdersService {
         return new OrdersDto(orders);
     }
 
+    public void deleteOrders(Long ordersId) {
+        Orders orders = getOrdersEntity(ordersId);
+        ordersRepository.delete(orders);
+    }
+
     private Item getItemEntity(Long itemId) {
         Item item = itemRepository.findById(itemId).orElseThrow(() -> {
             throw new IllegalArgumentException("상품이 존재하지 않습니다.");
