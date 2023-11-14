@@ -29,9 +29,16 @@ public class OrdersApiController {
     }
 
     @GetMapping("/{ordersId}")
-    public ResponseEntity<OrdersDto> getOrders(@PathVariable final Long ordersId) {
+    public ResponseEntity<OrdersDto> getOrders(@PathVariable("ordersId") final Long ordersId) {
         OrdersDto ordersDto = ordersService.getOrders(ordersId);
 
         return ResponseEntity.status(HttpStatus.OK).body(ordersDto);
+    }
+
+    @DeleteMapping("/{ordersId}")
+    public ResponseEntity<Void> deleteOrders(@PathVariable("ordersId") final Long ordersId) {
+        ordersService.deleteOrders(ordersId);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
