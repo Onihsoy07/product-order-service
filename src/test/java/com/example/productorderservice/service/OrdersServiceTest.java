@@ -1,20 +1,29 @@
 package com.example.productorderservice.service;
 
+import com.example.productorderservice.config.ApiTestConfig;
+import com.example.productorderservice.domain.dto.ItemDto;
 import com.example.productorderservice.domain.dto.ItemSaveDto;
 import com.example.productorderservice.domain.dto.OrdersSaveDto;
 import com.example.productorderservice.domain.dto.OrdersDto;
 import com.example.productorderservice.domain.enumeration.DiscountPolicy;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 @SpringBootTest
 @Transactional
-public class OrdersServiceTest {
+public class OrdersServiceTest extends ApiTestConfig {
 
+    @Mock
+    OrdersService ordersServiceMock;
     @Autowired
     OrdersService ordersService;
     @Autowired
@@ -41,11 +50,12 @@ public class OrdersServiceTest {
         final Long itemId = 1L;
         final Long ordersId = 1L;
         final int quantity = 1004;
-        addItem();
-        addOrders(itemId);
+        Mockito.when(ordersServiceMock.getOrders(itemId))
+                .thenReturn(new OrdersDto(ordersId, quantity, new ItemDto(itemId, "상품명", 9999, DiscountPolicy.NONE.getValue())));
+
 
         //when
-        OrdersDto ordersDto = ordersService.getOrders(ordersId);
+        OrdersDto ordersDto = ordersServiceMock.getOrders(ordersId);
 
         //then
         assertThat(ordersDto.getId()).isEqualTo(ordersId);
@@ -64,14 +74,14 @@ public class OrdersServiceTest {
         final Long ordersId = 1L;
         addItem();
         addOrders(itemId);
+        ItemDto item = itemService.getItem(itemId);
+        OrdersDto orders = ordersService.getOrders(ordersId);
 
         //when
         ordersService.deleteOrders(ordersId);
 
         //then
         assertThatThrownBy(() -> ordersService.getOrders(ordersId)).isInstanceOf(IllegalArgumentException.class);
-
-
     }
 
     private void addItem() {

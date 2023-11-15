@@ -1,5 +1,6 @@
 package com.example.productorderservice.service;
 
+import com.example.productorderservice.config.ApiTestConfig;
 import com.example.productorderservice.domain.dto.ItemDto;
 import com.example.productorderservice.domain.dto.ItemSaveDto;
 import com.example.productorderservice.domain.dto.ItemUpdateDto;
@@ -18,7 +19,7 @@ import static org.assertj.core.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
 @Transactional
-public class ItemServiceTest {
+public class ItemServiceTest extends ApiTestConfig {
 
     @Mock
     private ItemService itemServiceMock;
